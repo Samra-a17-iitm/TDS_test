@@ -1,0 +1,25 @@
+name: Daily Commit Job
+
+on:
+  schedule:
+    - cron: "0 2 * * *"  # Runs daily at 2 AM UTC
+  workflow_dispatch:  # Allows manual execution
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Allows pushing changes
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add a commit for 21f1006915@ds.study.iitm.ac.in
+        run: |
+          echo "Automated update on $(date)" >> daily-update.txt
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions Bot"
+          git add daily-update.txt
+          git commit -m "Automated daily update [skip ci]" || exit 0
+          git push
