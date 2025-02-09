@@ -1,25 +1,22 @@
-name: Daily Commit Job
+name: Daily Commit Update
 
 on:
   schedule:
-    - cron: "0 2 * * *"  # Runs daily at 2 AM UTC
-  workflow_dispatch:  # Allows manual execution
-
+    - cron: '0 10 * * *'  # This runs the workflow every day at 10:00 AM UTC. Adjust as necessary.
+    
 jobs:
-  auto-commit:
+  daily_commit:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # Allows pushing changes
-
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Add a commit for 21f1006915@ds.study.iitm.ac.in
-        run: |
-          echo "Automated update on $(date)" >> daily-update.txt
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "GitHub Actions Bot"
-          git add daily-update.txt
-          git commit -m "Automated daily update [skip ci]" || exit 0
-          git push
+    - name: Make a commit with email 21f1006915@ds.study.iitm.ac.in
+      run: |
+        echo "Updating repository with a daily commit" >> daily_update.txt
+        git config user.name "DevSync Bot"
+        git config user.email "21f1006915@ds.study.iitm.ac.in"
+        git add daily_update.txt
+        git commit -m "Daily commit update"
+        git push
